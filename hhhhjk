@@ -1,0 +1,127 @@
+# ----------------------------------------
+# Autocompletado Mejorado (Zsh + Fuzzy + Dynamic)
+# ----------------------------------------
+
+# Habilitar zsh-autosuggestions (predicción de texto)
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'  # Color de las sugerencias (gris)
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)  # Usar tanto el historial como la completación para las sugerencias
+ZSH_AUTOSUGGEST_ACCEPT_ON_RIGHT_ARROW=1  # Aceptar sugerencia al presionar la flecha derecha
+ZSH_AUTOSUGGEST_MARGIN=2  # Margen entre la sugerencia y el prompt
+
+# Inicializar sistema de completado
+autoload -U compinit && compinit
+
+# Habilitar bash-style completion
+autoload -U bashcompinit && bashcompinit
+
+# Agregar zsh-completions para funcionalidad extendida (Asegúrate de que el plugin esté instalado)
+fpath+=~/.zsh/zsh-completions/src
+source ~/.zsh/zsh-completions/zsh-completions.plugin.zsh
+
+# Habilitar coincidencia difusa para un mejor completado
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # Coincidencia sin distinción de mayúsculas/minúsculas
+zstyle ':completion:*' fuzzy-completion yes  # Habilitar coincidencia difusa
+
+# Habilitar completado dinámico avanzado para mayor precisión
+zstyle ':completion:*:*:apt:*' completer _complete _expand _prefix _approximate  # Completado para apt
+zstyle ':completion:*:*:git:*' completer _complete _expand _prefix _approximate  # Completado para git
+zstyle ':completion:*:*:docker:*' completer _complete _expand _prefix _approximate  # Completado para docker
+zstyle ':completion:*:*:npm:*' completer _complete _expand _prefix _approximate  # Completado para npm
+zstyle ':completion:*:*:pacman:*' completer _complete _expand _prefix _approximate  # Completado para pacman
+
+# Usar más fuentes de completado para los comandos
+zstyle ':completion:*:*:apt:*' completer _complete _approximate _expand
+zstyle ':completion:*:*:git:*' completer _complete _approximate _expand
+zstyle ':completion:*:*:docker:*' completer _complete _approximate _expand
+zstyle ':completion:*:*:npm:*' completer _complete _approximate _expand
+zstyle ':completion:*:*:pacman:*' completer _complete _approximate _expand
+
+# Habilitar completado avanzado para comandos con una opción dinámica
+zstyle ':completion:*:*:apt:*' menu select  # Habilitar selección de menú para comandos apt
+zstyle ':completion:*:*:git:*' menu select  # Habilitar selección de menú para comandos git
+zstyle ':completion:*:*:docker:*' menu select  # Habilitar selección de menú para comandos docker
+zstyle ':completion:*:*:npm:*' menu select  # Habilitar selección de menú para comandos npm
+zstyle ':completion:*:*:pacman:*' menu select  # Habilitar selección de menú para comandos pacman
+
+# Habilitar auto-completado de texto, los primeros caracteres posibles
+zstyle ':completion:*' auto-description 'true'  # Completar automáticamente el texto de comandos
+zstyle ':completion:*' completer _complete _expand _prefix _approximate  # Completado de texto mejorado
+
+# ----------------------------------------
+# Resaltado de Sintaxis (para diferenciar comandos válidos/erróneos)
+# ----------------------------------------
+
+# Plugin de resaltado de sintaxis para errores de comandos (instálalo primero si es necesario)
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)  # Usar resaltado principal
+
+# Habilitar resaltado de errores en rojo
+zstyle ':completion:*' list-colors 'mt=31:md=31:me=33:se=36:so=32'  # Rojo para errores, verde para comandos válidos
+
+# ----------------------------------------
+# Opciones Avanzadas de Autocompletado
+# ----------------------------------------
+
+# Habilitar completado dinámico
+zstyle ':completion:*' completer _complete _expand _prefix _approximate
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # Coincidencia sin distinción de mayúsculas/minúsculas
+
+# Habilitar selección automática del menú después de escribir parte del comando
+zstyle ':completion:*' menu select
+
+# ----------------------------------------
+# Actualización Automática del Sistema y Gestión de Paquetes
+# ----------------------------------------
+
+# Ejecutar actualización del sistema automáticamente (apt y pkg)
+echo "Running system updates... Please wait."
+apt update && apt upgrade -y && pkg update && pkg upgrade -y
+echo "System update completed!"
+
+# ----------------------------------------
+# Mejorar Sugerencias de Completado para Entradas de Comandos
+# ----------------------------------------
+
+# Habilitar mejor completado de sugerencias, específicamente para APT, Git, Docker, etc.
+zstyle ':completion:*:*:apt:*' completer _complete _approximate
+zstyle ':completion:*:*:git:*' completer _complete _approximate
+zstyle ':completion:*:*:docker:*' completer _complete _approximate
+zstyle ':completion:*:*:npm:*' completer _complete _approximate
+zstyle ':completion:*:*:pacman:*' completer _complete _approximate
+
+# Coincidencia difusa para todos los comandos
+zstyle ':completion:*' fuzzy-completion yes
+
+# ----------------------------------------
+# Mejoras de Velocidad y Auto-sugerencias
+# ----------------------------------------
+
+# Habilitar completado difuso para todos los comandos del sistema
+zstyle ':completion:*' fuzzy-completion yes
+
+# Habilitar coincidencia sin distinción de mayúsculas/minúsculas para más precisión
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # Coincidencia de comandos sin distinción de mayúsculas/minúsculas
+
+# ----------------------------------------
+# Añadir combinaciones de teclas personalizadas (Opcional)
+# ----------------------------------------
+
+# Asignar la tecla 'Enter' para aceptar sugerencias
+bindkey '^M' autosuggest-accept  # Aceptar autosugerencia al presionar Enter (equivalente a Ctrl-M)
+
+# ----------------------------------------
+# Alias personalizados (Opcional)
+# ----------------------------------------
+
+# Puedes agregar alias personalizados aquí
+alias update='apt update && apt upgrade -y && pkg update && pkg upgrade -y'
+
+# ----------------------------------------
+# Optimizaciones Finales y Mejoras
+# ----------------------------------------
+
+# Establecer tamaño e historial
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
